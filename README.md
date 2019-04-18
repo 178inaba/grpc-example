@@ -10,6 +10,8 @@ $ protoc --proto_path ./echo/proto --go_out=plugins=grpc:./echo/proto/ ./echo/pr
 
 ### Downloader
 
+`-I` is a short option of `--proto_path`.
+
 ```console
 $ protoc -I ./downloader/proto --go_out=plugins=grpc:./downloader/proto/ ./downloader/proto/file.proto
 ```
