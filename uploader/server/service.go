@@ -28,8 +28,13 @@ func (s *fileService) Upload(stream pb.FileService_UploadServer) error {
 	}
 
 	fp := filepath.Join("./uploader/resource", name)
-	ioutil.WriteFile(fp, blob, 0644)
-	stream.SendAndClose(&pb.FileResponse{Size: int64(len(blob))})
+	if err := ioutil.WriteFile(fp, blob, 0644); err != nil {
+		return err
+	}
+
+	if err := stream.SendAndClose(&pb.FileResponse{Size: int64(len(blob))}); err != nil {
+		return err
+	}
 
 	return nil
 }

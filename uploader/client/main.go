@@ -44,7 +44,9 @@ func main() {
 			log.Fatalf("Could not read file %v.", err)
 		}
 
-		stream.Send(&pb.FileRequest{Name: name, Data: buf[:n]})
+		if err := stream.Send(&pb.FileRequest{Name: name, Data: buf[:n]}); err != nil {
+			log.Fatalf("Could not send file %v.", err)
+		}
 	}
 
 	res, err := stream.CloseAndRecv()
