@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 
@@ -9,16 +10,16 @@ import (
 )
 
 func main() {
-	port := ":50051"
-	lis, err := net.Listen("tcp", port)
+	port := 50051
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
-		log.Fatalf("Failed to listen: %v\n", err)
+		log.Fatalf("Failed to listen: %v.", err)
 	}
 
 	srv := grpc.NewServer()
 	pb.RegisterEchoServiceServer(srv, &echoService{})
-	log.Printf("Start server on port%s\n", port)
+	log.Printf("Start server on port: %d.", port)
 	if err := srv.Serve(lis); err != nil {
-		log.Printf("Failed to serve: %v\n", err)
+		log.Fatalf("Failed to serve: %v.", err)
 	}
 }
