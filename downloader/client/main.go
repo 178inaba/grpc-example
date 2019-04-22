@@ -13,30 +13,31 @@ import (
 )
 
 func main() {
-	target := "localhost:50051"
-	conn, err := grpc.Dial(target, grpc.WithInsecure())
+	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("Did not connect: %s.", err)
+		log.Fatalf("Did not connect: %v.", err)
 	}
 
 	c := pb.NewFileServiceClient(conn)
-	name := os.Args[1]
+
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
+	name := os.Args[1]
+
 	stream, err := c.Download(ctx, &pb.FileRequest{Name: name})
 	if err != nil {
-		log.Fatalf("Could not download: %s\n", err)
+		log.Fatalf("Could not download: %v.", err)
 	}
 
 	var blob []byte
 	for {
 		c, err := stream.Recv()
 		if err == io.EOF {
-			log.Printf("Done %d bytes\n", len(blob))
+			log.Printf("Done %d bytes.", len(blob))
 			break
 		} else if err != nil {
-			log.Fatalln(err)
+			log.Fatalf("Could not receive: %v.", err)
 		}
 
 		blob = append(blob, c.GetData()...)
