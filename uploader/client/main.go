@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	pb "github.com/178inaba/grpc-example/uploader/proto"
@@ -44,7 +45,7 @@ func main() {
 			log.Fatalf("Could not read file %v.", err)
 		}
 
-		if err := stream.Send(&pb.FileRequest{Name: name, Data: buf[:n]}); err != nil {
+		if err := stream.Send(&pb.FileRequest{Name: filepath.Base(name), Data: buf[:n]}); err != nil {
 			log.Fatalf("Could not send file %v.", err)
 		}
 	}
