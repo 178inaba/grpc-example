@@ -11,10 +11,9 @@ import (
 )
 
 func main() {
-	target := "localhost:50051"
-	conn, err := grpc.Dial(target, grpc.WithInsecure())
+	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("Did not connect: %s", err)
+		log.Fatalf("Did not connect: %v.", err)
 	}
 	defer conn.Close()
 
@@ -27,7 +26,7 @@ func main() {
 
 	r, err := client.Echo(ctx, &pb.EchoRequest{Message: msg})
 	if err != nil {
-		log.Println(err)
+		log.Fatalf("Did not echo: %v.", err)
 	}
 
 	log.Println(r.GetMessage())
