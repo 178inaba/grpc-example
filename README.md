@@ -18,8 +18,14 @@ $ protoc -I ./downloader/proto --go_out=plugins=grpc:./downloader/proto/ ./downl
 
 ### Uploader
 
-```
+```console
 $ protoc -I ./uploader/proto --go_out=plugins=grpc:./uploader/proto/ ./uploader/proto/file.proto
+```
+
+### Chat
+
+```console
+$ protoc -I ./chat/proto --go_out=plugins=grpc:./chat/proto/ ./chat/proto/chat.proto
 ```
 
 ## License
