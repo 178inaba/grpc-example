@@ -16,6 +16,12 @@ $ protoc --proto_path ./echo/proto --go_out=plugins=grpc:./echo/proto/ ./echo/pr
 $ protoc -I ./downloader/proto --go_out=plugins=grpc:./downloader/proto/ ./downloader/proto/file.proto
 ```
 
+### Uploader
+
+```
+$ protoc -I ./uploader/proto --go_out=plugins=grpc:./uploader/proto/ ./uploader/proto/file.proto
+```
+
 ## License
 
 [MIT](LICENSE)
