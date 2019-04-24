@@ -1,4 +1,4 @@
-# grpc-example
+# gRPC Example
 
 ## Command to generate code
 
