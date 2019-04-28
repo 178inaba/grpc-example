@@ -46,7 +46,8 @@ func main() {
 		}
 
 		if err := stream.Send(&pb.FileRequest{Name: filepath.Base(name), Data: buf[:n]}); err != nil {
-			log.Fatalf("Could not send file: %v.", err)
+			log.Printf("Could not send file: %v.", err)
+			break
 		}
 	}
 
