@@ -28,7 +28,7 @@ func main() {
 
 	c := pb.NewFileServiceClient(conn)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	stream, err := c.Upload(ctx)
