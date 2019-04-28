@@ -16,7 +16,7 @@ func main() {
 	name := os.Args[1]
 	fs, err := os.Open(name)
 	if err != nil {
-		log.Fatalf("Could not open file %v.", err)
+		log.Fatalf("Could not open file: %v.", err)
 	}
 	defer fs.Close()
 
@@ -42,17 +42,17 @@ func main() {
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			log.Fatalf("Could not read file %v.", err)
+			log.Fatalf("Could not read file: %v.", err)
 		}
 
 		if err := stream.Send(&pb.FileRequest{Name: filepath.Base(name), Data: buf[:n]}); err != nil {
-			log.Fatalf("Could not send file %v.", err)
+			log.Fatalf("Could not send file: %v.", err)
 		}
 	}
 
 	res, err := stream.CloseAndRecv()
 	if err != nil {
-		log.Fatalf("Could not receive response file %v.", err)
+		log.Fatalf("Could not receive response file: %v.", err)
 	}
 
 	log.Printf("Done %d bytes.", res.GetSize())
