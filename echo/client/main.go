@@ -8,6 +8,7 @@ import (
 
 	pb "github.com/178inaba/grpc-example/echo/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/status"
 )
 
 func main() {
@@ -26,6 +27,11 @@ func main() {
 
 	r, err := client.Echo(ctx, &pb.EchoRequest{Message: msg})
 	if err != nil {
+		st, ok := status.FromError(err)
+		if ok {
+			log.Fatalf("Did not echo: code: %d, code name: %s, message: %s.", st.Code(), st.Code(), st.Message())
+		}
+
 		log.Fatalf("Did not echo: %v.", err)
 	}
 
