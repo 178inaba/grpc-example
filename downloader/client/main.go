@@ -9,11 +9,14 @@ import (
 	"time"
 
 	pb "github.com/178inaba/grpc-example/downloader/proto"
+	"github.com/178inaba/grpc-example/interceptor"
 	"google.golang.org/grpc"
 )
 
 func main() {
-	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
+	conn, err := grpc.Dial("localhost:50051",
+		grpc.WithInsecure(),
+		grpc.WithUnaryInterceptor(interceptor.LoggingUnaryForClient))
 	if err != nil {
 		log.Fatalf("Did not connect: %v.", err)
 	}
