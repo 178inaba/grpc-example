@@ -54,8 +54,8 @@ func main() {
 	}
 
 	serverHash := trailer.Get("sha256")[0]
-	log.Printf("client hash is %q.", hash)
-	log.Printf("server hash is %q.", serverHash)
+	log.Printf("Client hash is %q.", hash)
+	log.Printf("Server hash is %q.", serverHash)
 	if serverHash != hash {
 		log.Fatal("The message has been tampered with.")
 	}

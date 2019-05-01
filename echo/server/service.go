@@ -32,8 +32,8 @@ func (s *echoService) Echo(ctx context.Context, req *pb.EchoRequest) (*pb.EchoRe
 		log.Printf("Metadata is %v.", md)
 
 		clientHash := md.Get("sha256")[0]
-		log.Printf("client message hash is %q.", clientHash)
-		log.Printf("server message hash is %q.", hash)
+		log.Printf("Client message hash is %q.", clientHash)
+		log.Printf("Server message hash is %q.", hash)
 		if clientHash != hash {
 			return nil, status.Error(codes.InvalidArgument, "the message has been tampered with")
 		}
