@@ -1,5 +1,7 @@
 # gRPC Example
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/178inaba/grpc-example)](https://goreportcard.com/report/github.com/178inaba/grpc-example)
+
 ## Command to generate code
 
 ### Echo
