@@ -32,9 +32,5 @@ func (s *fileService) Upload(stream pb.FileService_UploadServer) error {
 		return err
 	}
 
-	if err := stream.SendAndClose(&pb.FileResponse{Size: int64(len(blob))}); err != nil {
-		return err
-	}
-
-	return nil
+	return stream.SendAndClose(&pb.FileResponse{Size: int64(len(blob))})
 }
