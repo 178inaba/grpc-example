@@ -31,3 +31,11 @@ func LoggingStreamForClient(ctx context.Context, desc *grpc.StreamDesc, cc *grpc
 
 	return stream, err
 }
+
+func LoggingStreamForServer(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+	start := time.Now()
+	err := handler(srv, ss)
+	log.Printf("Stream - Method: %s, StatusCode: %s, ConnectionTime: %s.", info.FullMethod, status.Code(err), time.Since(start))
+
+	return err
+}
