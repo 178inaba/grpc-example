@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 
+	"github.com/178inaba/grpc-example/interceptor"
 	pb "github.com/178inaba/grpc-example/uploader/proto"
 	"google.golang.org/grpc"
 )
@@ -16,7 +17,7 @@ func main() {
 		log.Fatalf("Failed to listen: %v.", err)
 	}
 
-	srv := grpc.NewServer()
+	srv := grpc.NewServer(grpc.UnaryInterceptor(interceptor.LoggingUnaryForServer))
 	pb.RegisterFileServiceServer(srv, &fileService{})
 	log.Printf("Start server on port: %d.", port)
 	if err := srv.Serve(lis); err != nil {

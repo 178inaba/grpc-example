@@ -6,6 +6,7 @@ import (
 	"net"
 
 	pb "github.com/178inaba/grpc-example/echo/proto"
+	"github.com/178inaba/grpc-example/interceptor"
 	"google.golang.org/grpc"
 )
 
@@ -16,7 +17,7 @@ func main() {
 		log.Fatalf("Failed to listen: %v.", err)
 	}
 
-	srv := grpc.NewServer()
+	srv := grpc.NewServer(grpc.UnaryInterceptor(interceptor.LoggingUnaryForServer))
 	pb.RegisterEchoServiceServer(srv, &echoService{})
 	log.Printf("Start server on port: %d.", port)
 	if err := srv.Serve(lis); err != nil {
