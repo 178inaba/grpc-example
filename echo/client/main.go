@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"crypto/sha256"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -24,10 +26,20 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
+	if len(os.Args) < 2 {
+		log.Fatal("Please enter a message.")
+	}
+
 	msg := os.Args[1]
 
-	ctx = metadata.NewOutgoingContext(ctx, metadata.Pairs("k1", "v1-1", "k1", "v1-2", "k2", "v2"))
-	r, err := client.Echo(ctx, &pb.EchoRequest{Message: msg})
+	h := sha256.New()
+	h.Write([]byte(msg))
+	hash := fmt.Sprintf("%x", h.Sum(nil))
+	log.Printf("Message sha256 is %q.", hash)
+
+	ctx = metadata.NewOutgoingContext(ctx, metadata.Pairs("k1", "v1-1", "k1", "v1-2", "k2", "v2", "sha256", hash))
+	var header, trailer metadata.MD
+	r, err := client.Echo(ctx, &pb.EchoRequest{Message: msg}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		st, ok := status.FromError(err)
 		if ok {
@@ -37,5 +49,13 @@ func main() {
 		log.Fatalf("Did not echo: %v.", err)
 	}
 
-	log.Println(r.GetMessage())
+	serverHash := trailer.Get("sha256")[0]
+	log.Printf("client hash is %q.", hash)
+	log.Printf("server hash is %q.", serverHash)
+	if serverHash != hash {
+		log.Fatal("The message has been tampered with.")
+	}
+
+	log.Printf("Server echo header metadata: %v.", header)
+	log.Printf("Server echo message is %q.", r.GetMessage())
 }
