@@ -8,6 +8,7 @@ import (
 
 	pb "github.com/178inaba/grpc-example/echo/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
@@ -25,6 +26,7 @@ func main() {
 
 	msg := os.Args[1]
 
+	ctx = metadata.NewOutgoingContext(ctx, metadata.Pairs("k1", "v1-1", "k1", "v1-2", "k2", "v2"))
 	r, err := client.Echo(ctx, &pb.EchoRequest{Message: msg})
 	if err != nil {
 		st, ok := status.FromError(err)
