@@ -23,6 +23,6 @@ func main() {
 	pb.RegisterFileServiceServer(srv, &fileService{})
 	log.Printf("Start server on port: %d.", port)
 	if err := srv.Serve(lis); err != nil {
-		log.Printf("Failed to serve: %v.", err)
+		log.Printf("Exit server: %v.", err)
 	}
 }
